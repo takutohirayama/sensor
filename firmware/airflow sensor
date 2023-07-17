@@ -1,0 +1,81 @@
+#include <iostream>
+#include <cstdint>
+#include <unistd.h> // 必要に応じて適切なディレクトリをインクルードしてください
+
+// I2Cデバイスのアドレス定義
+#define LM73_ADDR 0x4C
+#define BYTES_TO_READ_TEMP 2
+#define ADC122C04_ADDR 0x40
+#define BYTES_TO_READ_PRESSURE 3
+
+// I2Cデバイスとの通信クラス
+class I2CDevice {
+public:
+    I2CDevice(uint8_t deviceAddress) : address(deviceAddress) {
+        // I2Cの初期化処理を実装する（各プラットフォームに依存）
+    }
+
+    bool writeByte(uint8_t regAddress, uint8_t data) {
+        // レジスタに1バイトのデータを書き込む処理を実装する（各プラットフォームに依存）
+    }
+
+    bool readBytes(uint8_t regAddress, uint8_t* buffer, uint8_t length) {
+        // レジスタから指定した長さのデータを読み取る処理を実装する（各プラットフォームに依存）
+    }
+
+private:
+    uint8_t address;
+};
+
+int16_t readTemperature(I2CDevice& lm73) {
+    uint8_t buffer[BYTES_TO_READ_TEMP];
+
+    if (lm73.readBytes(0x00, buffer, BYTES_TO_READ_TEMP)) {
+        int16_t data = (buffer[0] << 8) | buffer[1];
+        return data;
+    } else {
+        std::cout << "Error: Not enough data available." << std::endl;
+        return 0;
+    }
+}
+
+int32_t readPressure(I2CDevice& adc122c04) {
+    uint8_t buffer[BYTES_TO_READ_PRESSURE];
+
+    if (adc122c04.writeByte(0x08, 0x10) && adc122c04.readBytes(0x00, buffer, BYTES_TO_READ_PRESSURE)) {
+        int32_t data = (buffer[0] << 16) | (buffer[1] << 8) | buffer[2];
+        return data;
+    } else {
+        std::cout << "Error: Not enough data available." << std::endl;
+        return 0;
+    }
+}
+
+void as_elvr_polling(){
+    // I2C通信用のデバイスを初期化する（各プラットフォームに依存）
+    I2CDevice lm73(LM73_ADDR);
+    I2CDevice adc122c04(ADC122C04_ADDR);
+    
+    static __xdata u8 * __xdata next_buf = as_elvr_data;
+    
+    if(as_elvr_capture){
+        as_elvr_capture = FALSE;
+        
+        int16_t temp = readTemperature(lm73);
+        int32_t pressure = readPressure(adc122c04);
+        
+        // データの処理や出力を行うことができます
+        // 例えば、取得した温度と圧力をas_elvr_dataに格納するなど
+        *(next_buf++) = temp >> 8;
+        *(next_buf++) = temp & 0xFF;
+        *(next_buf++) = pressure >> 16;
+        *(next_buf++) = (pressure >> 8) & 0xFF;
+        *(next_buf++) = pressure & 0xFF;
+
+        if(next_buf == (as_elvr_data + sizeof(as_elvr_data))){
+            // Rotate
+            data_hub_assign_page(make_packet);
+            next_buf = as_elvr_data;
+        }
+    }
+}
