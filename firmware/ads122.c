@@ -42,7 +42,7 @@ void ads122_init(){
   //write_register(1, 0x68); // Register 1, 175SPS, Continuous conversion
   //write_register(1, 0x60); // Register 1, 175SPS, Single conversion
   send_cmd(0x08); // START/SYNC
-  capture_cycle = 0;
+  //capture_cycle = 0;
   ads122_capture = FALSE;
 }
 
@@ -80,7 +80,7 @@ void ads122_polling(){
     i2c_read_write(I2C_READ(I2C_ADDRESS_RW), next_buf, 3);
     next_buf += 3;
     
-    switch(capture_cycle++){
+   /*switch(capture_cycle++){
       case 0:
       case 4:
         write_register(0, 0x90); // Register 0, AINP = AIN1, AINN = AVSS
@@ -100,7 +100,8 @@ void ads122_polling(){
       case 3:
         write_register(1, 0x68); // Register 1, 175SPS, Continuous conversion, temperature OFF
         write_register(0, 0x80); // Register 0, AINP = AIN0, AINN = AVSS
-        break; 
+        break;
+    */
     }
   }
 }
