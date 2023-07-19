@@ -70,6 +70,22 @@ static void make_packet(packet_t *packet){
 }
 
 void ads122_polling(){
+  static __xdata u8 * __xdata next_buf = ads122_data;
+  if(ads122_capture){
+    ads122_capture = FALSE;
+    
+    send_cmd(0x10);
+    
+    for(int i = 0; i < 3; i++){
+      u8 data;
+      if(i2c_read_write(I2C_READ(I2C_ADDRESS_RW), &data, sizeof(data)) == sizeof(data)){
+        *(next_buf++) = data;
+      }
+    }
+  }
+}
+
+/*void ads122_polling(){
   
   static __xdata u8 * __xdata next_buf = ads122_data;
   
@@ -79,6 +95,7 @@ void ads122_polling(){
     send_cmd(0x10);
     i2c_read_write(I2C_READ(I2C_ADDRESS_RW), next_buf, 3);
     next_buf += 3;
+/*
     
    /*switch(capture_cycle++){
       case 0:
