@@ -36,9 +36,10 @@ static void write_register(u8 addr, u8 value){
 }
 
 void ads122_init(){
-  //write_register(0, 0x80); // Register 0, AINP = AIN0, AINN = AVSS
   write_register(0, 0x00); // Register 0, AINP = AIN0, AINN = AIN1, Gain0
-  write_register(1, 0x68); // Register 1, 175SPS, Continuous conversion
+  //write_register(0, 0x80); // Register 0, AINP = AIN0, AINN = AVSS
+  write_register(1, 0x0A); // Register 1, 20SPS, Continuous conversion
+  //write_register(1, 0x68); // Register 1, 175SPS, Continuous conversion
   //write_register(1, 0x60); // Register 1, 175SPS, Single conversion
   send_cmd(0x08); // START/SYNC
   capture_cycle = 0;
