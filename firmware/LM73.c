@@ -78,6 +78,10 @@ void ads122_polling(){
         *(next_buf++) = data;
       }
     }
+    
+    if (data<0){
+      data=-data;
+    }
   }
 }
 
