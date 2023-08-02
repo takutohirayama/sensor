@@ -32,6 +32,8 @@
 #ifndef __F38X_I2C_H__
 #define __F38X_I2C_H__
 
+#define I2C1_ADS122
+
 #include "type.h"
 
 #define I2C_WRITE(address_rw) ((address_rw) & ~0x01)
