@@ -32,8 +32,8 @@
 #ifndef __F38X_I2C_H__
 #define __F38X_I2C_H__
 
-#define I2C1_ADS122 1
-#define I2C1_LM73 2
+#define I2C1_ADS122 ads122
+#define I2C1_LM73 lm73
 
 #include "type.h"
 
