@@ -1,5 +1,6 @@
 #ifndef __LM73_H__
 #define __LM73_H__
+#define I2C1_LM73 1
 
 #include "type.h"
 
