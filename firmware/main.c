@@ -54,6 +54,7 @@
 #include "mag3110.h"
 #endif
 #include "ms5611.h"
+#include "LM73.h"
 #if defined(I2C1_ADS122)
 #include "ads122.h"
 #elif defined(I2C1_ELVR)
