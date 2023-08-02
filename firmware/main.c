@@ -56,6 +56,7 @@
 #include "ms5611.h"
 #if defined(I2C1_LM73)
 #include "LM73.h"
+#else
 #if defined(I2C1_ADS122)
 #include "ads122.h"
 #elif defined(I2C1_ELVR)
@@ -347,6 +348,7 @@ void main() {
     usb_polling();
 #if defined(I2C1＿LM73）
     lm73_polling();
+#else
 
     sys_state |= SYS_POLLING_ACTIVE;
   }
