@@ -65,7 +65,7 @@ static void make_packet(packet_t *packet){
   packet->current = dst;
 }
 
-void ads122_polling(){
+void lm73_polling(){
   static __xdata u8 * __xdata next_buf = lm73_data;
   if(lm73_capture){
     lm73_capture = FALSE;
