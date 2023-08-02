@@ -54,6 +54,7 @@
 #include "mag3110.h"
 #endif
 #include "ms5611.h"
+#if defined(I2C1_LM73)
 #include "LM73.h"
 #if defined(I2C1_ADS122)
 #include "ads122.h"
@@ -306,7 +307,10 @@ void main() {
   ads122_init();
 #elif defined(I2C1_ELVR)
   as_elvr_init();
-#endif
+#endif 
+#if defined(I2C1_LM73)
+  lm73_init();
+#else
   
   EA = 1; // Global Interrupt enable
   
@@ -341,6 +345,8 @@ void main() {
 #endif
     data_hub_polling();
     usb_polling();
+#if defined(I2C1＿LM73）
+    lm73_polling();
 
     sys_state |= SYS_POLLING_ACTIVE;
   }
