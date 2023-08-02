@@ -32,7 +32,7 @@
 #ifndef __F38X_I2C_H__
 #define __F38X_I2C_H__
 
-#define I2C1_ADS122
+#define I2C1_ADS122 1
 
 #include "type.h"
 
